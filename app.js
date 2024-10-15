@@ -6,7 +6,7 @@ const notification = document.getElementById('notification');
 const taskInput = document.getElementById('task');
 const taskTable = document.querySelector('table');
 
-document.addEventListener('DOMContentLoaded', ReadTask); // Carrega as tarefas ao carregar a página
+document.addEventListener('DOMContentLoaded', ReadTask); 
 
 // Função para exibir notificações temporárias
 function showNotification(message, timeout = 3000) {
@@ -35,11 +35,11 @@ async function AddTask() {
         const newTaskRef = push(dbRef);
         await set(newTaskRef, {
             task,
-            completed: false // Inicializa a tarefa como não concluída
+            completed: false 
         });
         showNotification("Tarefa criada com sucesso!");
-        taskInput.value = ""; // Limpa o campo de entrada
-        await ReadTask(); // Recarrega a lista de tarefas
+        taskInput.value = ""; 
+        await ReadTask(); 
     } catch (error) {
         console.error("Erro ao adicionar tarefa: ", error);
         showNotification("Erro ao criar a tarefa. Tente novamente.");
@@ -111,7 +111,7 @@ async function deleteData(key) {
         const taskRef = ref(db, `tasks/${key}`);
         await remove(taskRef);
         showNotification("Tarefa apagada com sucesso!");
-        await ReadTask(); // Atualiza a lista de tarefas após deletar
+        await ReadTask(); 
     } catch (error) {
         console.error("Erro ao apagar tarefa: ", error);
         showNotification("Erro ao apagar a tarefa.");
