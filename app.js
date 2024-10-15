@@ -1,5 +1,8 @@
 import { db } from './firebase_config.js';  
+import { auth } from './firebase_config.js';
 import { set, ref, push, get, remove, update } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+import {signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
 
 const add_task = document.getElementById('add_task');
 const notification = document.getElementById('notification');
@@ -58,7 +61,7 @@ async function ReadTask() {
         let html = '';
 
         if (!data) {
-            html = '<tr><td colspan="3">Nenhuma tarefa encontrada.</td></tr>';
+            // html = '<tr><td colspan="3">Nenhuma tarefa encontrada.</td></tr>';
         } else {
             Object.keys(data).forEach(key => {
                 const { task, completed } = data[key];
@@ -117,3 +120,24 @@ async function deleteData(key) {
         showNotification("Erro ao apagar a tarefa.");
     }
 }
+
+
+function LogoutUser() {
+    signOut(auth)
+        .then(() => {
+            console.log('Logout realizado com sucesso');
+            alert('Logout realizado com sucesso!');
+            
+            // Redirecionar para a página de login ou qualquer outra página
+            window.location.href = 'login.html'; // Redireciona para a página de login
+        })
+        .catch((error) => {
+            console.error("Erro ao fazer logout:", error);
+            alert('Erro ao fazer logout.');
+        });
+}
+
+// Adicionando o evento de clique no botão de logout
+const logoutButton = document.getElementById('logout_button');
+logoutButton.addEventListener('click', LogoutUser);
+
