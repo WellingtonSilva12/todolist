@@ -6,7 +6,7 @@ onAuthStateChanged(auth, (user) => {
         // Se o usuário estiver autenticado, redireciona para a página principal
         window.location.href = 'index.html';
     }
-});
+ });
 
 
 // Funcao de criação de usuário - Não será ativa 

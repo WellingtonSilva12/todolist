@@ -1,23 +1,36 @@
 import { db } from './firebase_config.js';  
 import { auth } from './firebase_config.js';
 import { set, ref, push, get, remove, update } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
-import {signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {signOut, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
 
 const add_task = document.getElementById('add_task');
 const notification = document.getElementById('notification');
 const taskInput = document.getElementById('task');
 const taskTable = document.querySelector('table');
+const toast = document.querySelector('.toast');
+
 
 document.addEventListener('DOMContentLoaded', ReadTask); 
+
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        // Se o usuário estiver autenticado, redireciona para a página principal
+        window.location.href = 'login.html';
+    }
+});
 
 // Função para exibir notificações temporárias
 function showNotification(message, timeout = 3000) {
     notification.innerText = message;
     setTimeout(() => {
         notification.innerText = "";
+        toast.classList.remove("active")
+
     }, timeout);
 }
+
+
 
 // Validação simples para entrada de tarefa
 function validateTaskInput(task) {
@@ -30,6 +43,8 @@ async function AddTask() {
     
     if (!validateTaskInput(task)) {
         showNotification("Por favor, insira uma tarefa válida.");
+        toast.classList.add("active")
+
         return;
     }
 
@@ -60,18 +75,24 @@ async function ReadTask() {
         const data = snapshot.val();
         let html = '';
 
+        const taskCount = Object.keys(data).length;
+        // console.log(`Total de tarefas: ${taskCount}`);
+
+        document.getElementById('task-count').innerText = taskCount;
+
         if (!data) {
             // html = '<tr><td colspan="3">Nenhuma tarefa encontrada.</td></tr>';
         } else {
             Object.keys(data).forEach(key => {
+
                 const { task, completed } = data[key];
                 html += `
-                    <tr>
+                    <tr class="task-content">
                         <td>
                             <input type="checkbox" class="task-checkbox" data-key="${key}" ${completed ? 'checked' : ''}/>
                         </td>
                         <td class="task-text" id="task-${key}" style="text-decoration: ${completed ? 'line-through' : 'none'}">${task}</td>
-                        <td><button class="del" onclick="deleteData('${key}')">Apagar</button></td>
+                        <td><a class="del" onclick="deleteData('${key}')"><i class='bx bxs-trash'></i></a></td>
                     </tr>
                 `;
             });
@@ -120,6 +141,8 @@ async function deleteData(key) {
         showNotification("Erro ao apagar a tarefa.");
     }
 }
+
+window.deleteData = deleteData
 
 
 function LogoutUser() {

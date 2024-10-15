@@ -4,21 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todolist - Firebase</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
 <body>
-    <div class="form">
-        <button id="logout_button">Sair</button>
+    <div class="container wrapper">
+        <div class="screen-backdrop"></div>
+        <div class="screen home-screen">
+            <div class="menu-btn">
+                <a class="logout" id="logout_button"><i class='bx bx-exit'></i></a><br>
+            </div>
+            <div class="toast">
+                <div class="toast-content">
+                    <div class="message">
+                        <span class="text text-2"><span id="notification"></span></span>
 
-        <span id="notification"></span>
-        <h1>Todolist</h1>
-        <input type="text" id="task" placeholder="Digite sua tarefa...">
-        <button id="add_task">+Tarefa</button>
+                    </div>
+                </div>
+            </div>
+            <div class="welcome">
+                <div class="content">
+                    <h1>Wellington Silva</h1>
+                    <p>Hoje você tem <span id="task-count"></span>  tarefas</p>
+                </div>
+            </div>
+            <div class="form">
+                <input type="text" id="task" placeholder="Adicionar tarefa">
+                <button id="add_task">+ TAREFA</button>
+            </div>
+            
+            <div class="table tasks-wrapper">
+                    <div class="tasks">
+                        <table>
+                        
+                        </table>
+                    </div>
+            </div>
+            <div class="backdrop-footer"></div>
+
+        </div>
     </div>
-    <div class="table">
-        <table>
-        
-        </table>
-      </div>
+    
 
     <script type="module" src="app.js"></script>
 

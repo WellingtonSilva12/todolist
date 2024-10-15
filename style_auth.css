@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    color: #2e2e2e;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Space Grotesk", sans-serif;
+}
+
+.wrapper {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+}
+
+@media (min-width:768px) {
+    .wrapper {
+        height: 50rem;
+        width: 25rem;
+        border-radius: 40px;
+        border: 5px solid #2e2e2e;
+        padding: 30px;
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    /* position: relative; */
+    /* justify-content: center; */
+}
+
+.container .login {
+    /* display:flex ; */
+    text-align: center;
+    margin-top: 25px;
+}
+
+.login h1 {
+    color: #85AFEE;
+    margin-bottom: 25px;
+    letter-spacing: 1.2pt;
+}
+.login p {
+    color: #7c818a;
+    margin-bottom: 45px;
+    padding-inline: 1.5rem;
+    letter-spacing: 1pt;
+}
+
+.screen-backdrop {
+    width: 150%;
+    height: 25rem;
+    position: absolute;
+    top: 650px;
+    z-index: -1;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50% 50% 0 0;
+    background-color: #85AFEE;
+}
+
+.container .form{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form input {
+    padding: 15px 25px;
+    border-radius: 12px;
+    border: 2px solid #e2e2e2;
+    font-size: 16px;
+}
+
+.form button {
+    padding: 15px 0;
+    border-radius: 12px;
+    margin-top: 15px;
+    border: none;
+    font-size: 1rem;
+    background: #85AFEE;
+
+
+}
