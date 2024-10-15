@@ -47,18 +47,21 @@ body {
     /* display:flex ; */
     text-align: center;
     margin-top: 25px;
+    margin-inline: 20px;
 }
 
 .login h1 {
     color: #85AFEE;
     margin-bottom: 25px;
     letter-spacing: 1.2pt;
+    font-size: 1.8rem;
 }
 .login p {
     color: #7c818a;
     margin-bottom: 45px;
     padding: 1.5rem 1.2rem 8rem 1.2rem;
     letter-spacing: 1pt;
+    font-size: .9rem;
 }
 
 .screen-backdrop {
@@ -77,13 +80,15 @@ body {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    margin-inline: 20px;
 }
 
 .form input {
     padding: 15px 25px;
     border-radius: 12px;
     border: 2px solid #e2e2e2;
-    font-size: 16px;
+    font-size: 14px;
+    
 }
 
 .form button {

@@ -43,7 +43,7 @@ async function AddTask() {
     
     if (!validateTaskInput(task)) {
         showNotification("Por favor, insira uma tarefa válida.");
-        toast.classList.add("active")
+        toast.classList.add("active");
 
         return;
     }
@@ -56,11 +56,13 @@ async function AddTask() {
             completed: false 
         });
         showNotification("Tarefa criada com sucesso!");
-        taskInput.value = ""; 
+        taskInput.value = "";
+        toast.classList.add("active");
         await ReadTask(); 
     } catch (error) {
         console.error("Erro ao adicionar tarefa: ", error);
         showNotification("Erro ao criar a tarefa. Tente novamente.");
+        toast.classList.add("active");
     }
 }
 
@@ -106,6 +108,7 @@ async function ReadTask() {
     } catch (error) {
         console.error("Erro ao ler tarefas: ", error);
         showNotification("Erro ao carregar as tarefas.");
+        toast.classList.add("active");
     }
 }
 
@@ -135,9 +138,11 @@ async function deleteData(key) {
         const taskRef = ref(db, `tasks/${key}`);
         await remove(taskRef);
         showNotification("Tarefa apagada com sucesso!");
+        toast.classList.add("active");
         await ReadTask(); 
     } catch (error) {
         console.error("Erro ao apagar tarefa: ", error);
+        toast.classList.add("active");
         showNotification("Erro ao apagar a tarefa.");
     }
 }
@@ -148,15 +153,15 @@ window.deleteData = deleteData
 function LogoutUser() {
     signOut(auth)
         .then(() => {
-            console.log('Logout realizado com sucesso');
-            alert('Logout realizado com sucesso!');
+            showNotification('Logout realizado com sucesso');
+            toast.classList.add("active");
             
             // Redirecionar para a página de login ou qualquer outra página
             window.location.href = 'login.html'; // Redireciona para a página de login
         })
         .catch((error) => {
             console.error("Erro ao fazer logout:", error);
-            alert('Erro ao fazer logout.');
+            // alert('Erro ao fazer logout.');
         });
 }
 
