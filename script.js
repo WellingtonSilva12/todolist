@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getDatabase,set,ref,push,get,remove } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+import { getDatabase,set,ref,push,get,remove,update } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
 
   const firebaseConfig = {
@@ -18,6 +18,8 @@ const db = getDatabase(app);
 
 const add_task = document.getElementById('add_task');
 const notification = document.getElementById('notification');
+
+ReadTask(); 
 
 // Função para exibir notificações temporárias
 function showNotification(message, timeout = 3000) {
@@ -39,17 +41,20 @@ function AddTask() {
     const dbRef = ref(db, 'tasks/');
     const newTaskRef = push(dbRef);
     
-    set(newTaskRef, { task: task })
-        .then(() => {
-            showNotification("Tarefa criada com sucesso!");
-            document.getElementById('task').value = "";
-            console.log(task);
-            ReadTask(); 
-        })
-        .catch((error) => {
-            console.error("Erro ao adicionar tarefa: ", error);
-            showNotification("Erro ao criar a tarefa. Tente novamente.");
-        });
+    set(newTaskRef, {
+        task: task,
+        completed: false // Adiciona a tarefa como não concluída
+    })
+    .then(() => {
+        showNotification("Tarefa criada com sucesso!");
+        document.getElementById('task').value = "";
+        console.log(task);
+        ReadTask(); 
+    })
+    .catch((error) => {
+        console.error("Erro ao adicionar tarefa: ", error);
+        showNotification("Erro ao criar a tarefa. Tente novamente.");
+    });
 }
 
 // Adiciona evento de clique no botão "Adicionar Tarefa"
@@ -65,27 +70,56 @@ function ReadTask() {
         let html = '';
 
         if (!data) {
-            html = '<tr><td colspan="2">Nenhuma tarefa encontrada.</td></tr>';
+            html = '<tr><td colspan="3">Nenhuma tarefa encontrada.</td></tr>';
         } else {
             for (const key in data) {
-                const { task } = data[key];
+                const { task, completed } = data[key];
                 console.log(key);
                   
                 html += `
                     <tr>
-                        <td>${task}</td>
+                        <td>
+                            <input type="checkbox" class="task-checkbox" data-key="${key}" ${completed ? 'checked' : ''}/>
+                        </td>
+                        <td class="task-text" id="task-${key}" style="text-decoration: ${completed ? 'line-through' : 'none'}">${task}</td>
                         <td><button class="del" onclick="deleteData('${key}')">Apagar</button></td>
                     </tr>
                 `;
             }
         }
         table.innerHTML = html;
+
+        // Adiciona o evento de clique para todos os checkboxes
+        document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', toggleTaskCompletion);
+        });
     }).catch((error) => {
         console.error("Erro ao ler tarefas: ", error);
         showNotification("Erro ao carregar as tarefas.");
     });
 }
-ReadTask();
+
+// Função que alterna o estilo de riscado da tarefa e atualiza o banco de dados
+function toggleTaskCompletion(event) {
+    const checkbox = event.target;
+    const taskKey = checkbox.getAttribute('data-key');
+    const taskText = document.getElementById(`task-${taskKey}`);
+    const isCompleted = checkbox.checked;
+
+    // Atualiza o estilo da tarefa (riscado ou não)
+    taskText.style.textDecoration = isCompleted ? "line-through" : "none";
+
+    // Atualiza o status da tarefa no Firebase
+    const taskRef = ref(db, `tasks/${taskKey}`);
+    update(taskRef, { completed: isCompleted })
+    .then(() => {
+        showNotification("Status da tarefa atualizado!");
+    })
+    .catch((error) => {
+        console.error("Erro ao atualizar tarefa: ", error);
+        showNotification("Erro ao atualizar a tarefa.");
+    });
+}
 
 // Função para deletar tarefa
 window.deleteData = function(key) {
