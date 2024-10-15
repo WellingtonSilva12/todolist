@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
-
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 // Configuração do Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAHuzrL6esocKWo5ZULM4bZoR4hlt5TtZE",
@@ -17,5 +17,8 @@ const app = initializeApp(firebaseConfig);
 
 // Exporta o banco de dados para ser usado em outros arquivos
 const db = getDatabase(app);
+const auth = getAuth(app)
 
 export { db };
+export { auth } ;
+
