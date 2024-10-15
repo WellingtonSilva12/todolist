@@ -98,7 +98,7 @@ async function toggleTaskCompletion(event) {
 
         // Atualiza o estilo da tarefa (riscado ou não)
         taskText.style.textDecoration = isCompleted ? "line-through" : "none";
-        showNotification("Status da tarefa atualizado!");
+        // showNotification("Status da tarefa atualizado!");
     } catch (error) {
         console.error("Erro ao atualizar tarefa: ", error);
         showNotification("Erro ao atualizar a tarefa.");
