@@ -42,6 +42,15 @@ function showNotification(message, timeout = 3000) {
     }, timeout);
 }
 
+// Função para enviar tarefa ao apertar "Enter"
+taskInput.addEventListener('keydown', function(event) {
+    // Verifica se a tecla pressionada foi "Enter" (key code 13)
+    if (event.key === 'Enter') {
+        AddTask();  // Chama a função para adicionar a tarefa
+    }
+});
+
+
 // Validação simples para entrada de tarefa
 function validateTaskInput(task) {
     return task && task.trim().length > 0;
