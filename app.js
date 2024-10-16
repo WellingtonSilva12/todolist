@@ -10,12 +10,24 @@ const taskInput = document.getElementById('task');
 const taskTable = document.querySelector('table');
 const toast = document.querySelector('.toast');
 
-
-document.addEventListener('DOMContentLoaded', ReadTask); 
+document.addEventListener('DOMContentLoaded', await ReadTask());
+ 
 
 onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        // Se o usuário estiver autenticado, redireciona para a página principal
+
+    document.getElementById('userDisplayName').innerText = user.displayName;
+    console.log(user)
+    console.log(user.displayName)
+    
+    if (user) {
+        // Exibe o nome do usuário
+        document.getElementById('userDisplayName').innerText = user.displayName;
+
+        // Chama a função para ler as tarefas do usuário autenticado
+        ReadTask(); // <-- Carrega as tarefas do usuário ao entrar
+
+    } else {
+        // Se o usuário não estiver autenticado, redireciona para a página de login
         window.location.href = 'login.html';
     }
 });
@@ -30,8 +42,6 @@ function showNotification(message, timeout = 3000) {
     }, timeout);
 }
 
-
-
 // Validação simples para entrada de tarefa
 function validateTaskInput(task) {
     return task && task.trim().length > 0;
@@ -40,17 +50,26 @@ function validateTaskInput(task) {
 // Função assíncrona para adicionar tarefa
 async function AddTask() {
     const task = taskInput.value.trim();
+    await ReadTask(); 
+
     
     if (!validateTaskInput(task)) {
         showNotification("Por favor, insira uma tarefa válida.");
         toast.classList.add("active");
-
         return;
     }
 
     try {
-        const dbRef = ref(db, 'tasks/');
-        const newTaskRef = push(dbRef);
+        const user = auth.currentUser;
+        if (!user) {
+            console.error('Usuário não autenticado.');
+            return;
+        }
+
+        const userUid = user.uid; 
+        const dbRef = ref(db, `tasks/${userUid}`); 
+        const newTaskRef = push(dbRef); 
+
         await set(newTaskRef, {
             task,
             completed: false 
@@ -58,7 +77,6 @@ async function AddTask() {
         showNotification("Tarefa criada com sucesso!");
         taskInput.value = "";
         toast.classList.add("active");
-        await ReadTask(); 
     } catch (error) {
         console.error("Erro ao adicionar tarefa: ", error);
         showNotification("Erro ao criar a tarefa. Tente novamente.");
@@ -66,13 +84,19 @@ async function AddTask() {
     }
 }
 
-// Adiciona evento de clique no botão "Adicionar Tarefa"
 add_task.addEventListener('click', AddTask);
 
 // Função assíncrona para ler as tarefas do banco de dados
 async function ReadTask() {
     try {
-        const userRef = ref(db, 'tasks/');
+        const user = auth.currentUser;
+        if (!user) {
+            console.error('Usuário não autenticado.');
+            return;
+        }
+
+        const userUid = user.uid; // Obtém o UID do usuário
+        const userRef = ref(db, `tasks/${userUid}`); // Referência para as tarefas do usuário
         const snapshot = await get(userRef);
         const data = snapshot.val();
         let html = '';
@@ -85,15 +109,11 @@ async function ReadTask() {
 
         const taskCount = data ? Object.keys(data).length : 0;
         taskCountElement.innerText = taskCount;
-        // console.log(`Total de tarefas: ${taskCount}`);
-
-        document.getElementById('task-count').innerText = taskCount;
 
         if (!data) {
-            // html = '<tr><td colspan="3">Nenhuma tarefa encontrada.</td></tr>';
+            // Nenhuma tarefa encontrada
         } else {
             Object.keys(data).forEach(key => {
-
                 const { task, completed } = data[key];
                 html += `
                     <tr class="task-content">
@@ -127,22 +147,37 @@ async function toggleTaskCompletion(event) {
     const isCompleted = checkbox.checked;
 
     try {
-        const taskRef = ref(db, `tasks/${taskKey}`);
+        const user = auth.currentUser;
+        if (!user) {
+            console.error('Usuário não autenticado.');
+            return;
+        }
+
+        const userUid = user.uid;
+        const taskRef = ref(db, `tasks/${userUid}/${taskKey}`);
         await update(taskRef, { completed: isCompleted });
 
         // Atualiza o estilo da tarefa (riscado ou não)
         taskText.style.textDecoration = isCompleted ? "line-through" : "none";
-        // showNotification("Status da tarefa atualizado!");
     } catch (error) {
         console.error("Erro ao atualizar tarefa: ", error);
         showNotification("Erro ao atualizar a tarefa.");
     }
 }
 
+
 // Função assíncrona para deletar tarefa
 async function deleteData(key) {
     try {
-        const taskRef = ref(db, `tasks/${key}`);
+        const user = auth.currentUser;
+        if (!user) {
+            console.error('Usuário não autenticado.');
+            return;
+        }
+
+        const userUid = user.uid;
+        const taskRef = ref(db, `tasks/${userUid}/${key}`); // Referência para a tarefa específica do usuário
+
         await remove(taskRef);
         showNotification("Tarefa apagada com sucesso!");
         toast.classList.add("active");
