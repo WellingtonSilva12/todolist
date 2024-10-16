@@ -19,16 +19,16 @@ onAuthStateChanged(auth, (user) => {
     console.log(user)
     console.log(user.displayName)
     
-    if (user) {
+    if (!user) {
         // Exibe o nome do usuário
-        document.getElementById('userDisplayName').innerText = user.displayName;
-
-        // Chama a função para ler as tarefas do usuário autenticado
-        ReadTask(); // <-- Carrega as tarefas do usuário ao entrar
+    
+        window.location.href = 'login.html';
 
     } else {
         // Se o usuário não estiver autenticado, redireciona para a página de login
-        window.location.href = 'login.html';
+        document.getElementById('userDisplayName').innerText = user.displayName;
+
+        ReadTask(); 
     }
 });
 
@@ -92,6 +92,7 @@ async function ReadTask() {
         const user = auth.currentUser;
         if (!user) {
             console.error('Usuário não autenticado.');
+
             return;
         }
 
