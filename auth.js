@@ -1,9 +1,15 @@
 import { auth } from './firebase_config.js';  
-import {createUserWithEmailAndPassword ,signInWithEmailAndPassword, onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {createUserWithEmailAndPassword ,signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider, signInWithPopup} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+const provider = new GoogleAuthProvider();
+const user = auth.currentUser;
+
+
+
+
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // Se o usuário estiver autenticado, redireciona para a página principal
         window.location.href = 'index.html';
     }
  });
@@ -92,6 +98,24 @@ function  SingInUser () {
  
 }
 
+const signIn = document.getElementById('sign_in')
+signIn.addEventListener('click',SingInUser)
 
-   const signIn = document.getElementById('sign_in')
-   signIn.addEventListener('click',SingInUser)
+// Função para login com Google
+function loginWithGoogle() {
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            // O usuário foi autenticado com sucesso
+            const user = result.user;
+            console.log('Usuário logado com sucesso:', user);
+            // Aqui você pode redirecionar ou fazer outras ações
+            window.location.href = "index.html"; // Redirecionar para a página principal
+        })
+        .catch((error) => {
+            console.error("Erro ao fazer login com Google:", error);
+        });
+}
+
+// Adicione um ouvinte de evento ao botão de login
+const googleLoginButton = document.getElementById('google_login');
+googleLoginButton.addEventListener('click', loginWithGoogle);
