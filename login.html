@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Todolist</title>
     <link rel="stylesheet" href="style_auth.css">
+    <!-- Importando o ícone do Boxicons se for necessário -->
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="wrapper"> 
@@ -22,7 +24,7 @@
                 <!-- Campo de senha com botão de "mostrar senha" -->
                 <div class="password-container">
                     <input type="password" id="password" placeholder="Senha">
-                    <span class="toggle-password" id="togglePassword">👁️</span>
+                    <span class="toggle-password" id="togglePassword"><i class='bx bxs-low-vision'></i></span>
                 </div>
 
                 <button id="sign_in">Entrar</button>
@@ -41,8 +43,8 @@
            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
            passwordField.setAttribute('type', type);
 
-           // Alterna o ícone (você pode substituir o emoji por um ícone apropriado)
-           this.textContent = type === 'password' ? '👁️' : '🙈';
+           // Alterna o ícone de olho (aberto/fechado)
+           this.innerHTML = type === 'password' ? "<i class='bx bxs-low-vision'></i>" : "<i class='bx bxs-show'></i>";
        });
    </script>
 </body>
