@@ -36,14 +36,21 @@ input[type="checkbox"] {
     
 }
 
-@media (min-width:768px) {
+@media (max-width:768px) {
     .wrapper {
         height: 100vh;
         width: 25rem;
         max-width: 320px;
         border-radius: 40px;
-        /* border: 5px solid #2e2e2e; */
         padding: 30px;
+    }
+
+    .tasks {
+        padding-top: 5px;
+        width: 87%;
+        position: absolute;
+        right: 0;
+        margin-inline: 20px;
     }
 }
  .wrapper .screen {
@@ -52,6 +59,7 @@ input[type="checkbox"] {
     z-index: 10;
     background-color: #85AFEE;
     padding-bottom: 15px;
+    top: 0;
  }
 .screen-backdrop {
     width: 135%;

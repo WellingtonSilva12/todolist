@@ -77,7 +77,14 @@ async function ReadTask() {
         const data = snapshot.val();
         let html = '';
 
-        const taskCount = Object.keys(data).length;
+        const taskCountElement = document.getElementById('task-count');
+        if (!taskCountElement) {
+            console.error("Elemento 'task-count' não encontrado no DOM.");
+            return;
+        }
+
+        const taskCount = data ? Object.keys(data).length : 0;
+        taskCountElement.innerText = taskCount;
         // console.log(`Total de tarefas: ${taskCount}`);
 
         document.getElementById('task-count').innerText = taskCount;
