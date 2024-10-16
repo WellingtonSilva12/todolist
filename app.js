@@ -50,7 +50,6 @@ function validateTaskInput(task) {
 // Função assíncrona para adicionar tarefa
 async function AddTask() {
     const task = taskInput.value.trim();
-    await ReadTask(); 
 
     
     if (!validateTaskInput(task)) {
@@ -75,6 +74,7 @@ async function AddTask() {
             completed: false 
         });
         showNotification("Tarefa criada com sucesso!");
+        await ReadTask(); 
         taskInput.value = "";
         toast.classList.add("active");
     } catch (error) {
