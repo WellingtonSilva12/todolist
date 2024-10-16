@@ -104,6 +104,22 @@ body {
     color: #fff;
     font-weight: 600;
     letter-spacing: 1.2px;
+}
 
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
 
+.password-container input {
+    padding-right: 30px; /* Espaço para o ícone */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #888; /* Cor do ícone */
 }
