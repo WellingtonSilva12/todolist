@@ -67,11 +67,14 @@ async function AddTask() {
         return;
     }
 
+    const now = new Date();
+    const createdAt = now.toLocaleDateString();
+
     try {
         const user = auth.currentUser;
         if (!user) {
             console.error('Usuário não autenticado.');
-            return;
+            return
         }
 
         const userUid = user.uid; 
@@ -80,7 +83,8 @@ async function AddTask() {
 
         await set(newTaskRef, {
             task,
-            completed: false 
+            completed: false,
+            createdAt
         });
         showNotification("Tarefa criada com sucesso!");
         await ReadTask(); 
@@ -124,13 +128,16 @@ async function ReadTask() {
             // Nenhuma tarefa encontrada
         } else {
             Object.keys(data).forEach(key => {
-                const { task, completed } = data[key];
+                const { task, completed, createdAt} = data[key];
                 html += `
                     <tr class="task-content">
                         <td>
                             <input type="checkbox" class="task-checkbox" data-key="${key}" ${completed ? 'checked' : ''}/>
                         </td>
-                        <td class="task-text" id="task-${key}" style="text-decoration: ${completed ? 'line-through' : 'none'}">${task}</td>
+                        <div class="text-data">
+                            <td class="task-text" id="task-${key}" style="text-decoration: ${completed ? 'line-through' : 'none'}">${task}</td>
+                            <td class="task-date">${createdAt}</td>
+                        </div>
                         <td><a class="del" onclick="deleteData('${key}')"><i class='bx bxs-trash'></i></a></td>
                     </tr>
                 `;
