@@ -40,14 +40,14 @@ input[type="checkbox"] {
     .wrapper {
         height: 100vh;
         width: 25rem;
-        max-width: 320px;
         border-radius: 40px;
-        padding: 30px;
+        padding: 0px 30px 30px 30px;
+        /* max-width: 320px; */
     }
 
     .tasks {
         padding-top: 5px;
-        width: 87%;
+        /* width: 87%; */
         position: absolute;
         right: 0;
         margin-inline: 20px;
