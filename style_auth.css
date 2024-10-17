@@ -91,6 +91,7 @@ body {
     border-radius: 12px;
     border: 2px solid #e2e2e2;
     font-size: 14px;
+    width: 100%;
     
 }
 
@@ -112,14 +113,18 @@ body {
     align-items: center;
 }
 
-.password-container input {
-    padding-right: 30px; /* Espaço para o ícone */
-}
+
 
 .toggle-password {
     position: absolute;
     right: 10px;
     cursor: pointer;
-    font-size: 18px;
-    color: #888; /* Cor do ícone */
+    font-size: 1.5rem;
+    color: #888; 
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.toggle-password:hover {
+    color: #85AFEE;
 }
